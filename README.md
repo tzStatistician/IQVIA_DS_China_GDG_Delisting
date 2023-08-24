@@ -1,1 +1,3 @@
-# IQVIA_DS_China_GDG_Delisting
+# CHPA GDG Delisting Products Detection
+# Organization: IQVIA DSAA China 
+## This Repo is for he project to detect delisted producsts 
