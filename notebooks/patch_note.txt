@@ -1,0 +1,58 @@
+Ver.1
+Date: 08/28/2023
+Main Task: GPT-4 Code interpreter training-testing
+
+Preprocess: 
+1. Remove variables: pfc5, atc, atc2, pack_desc, prod_desc, molecule, lab_desc, corpname, 
+2. categorical variables: atc1, mnflg, vbp_flag, VBP_Batch,	VBP_time, NRDL, NRDL_LIMTT, ENTRY_TIME
+
+GPT-4 code interpreter training steps (prompt):
+1. Select all delist_tab=1 and then random sampling 1000 obs with delist_tab =0. 
+2. NA Processing:
+    categorical variables: atc1, mnflg, vbp_flag, VBP_Batch,	VBP_time, NRDL, NRDL_LIMTT, ENTRY_TIME
+    for categorical variable to LabaelEncoding
+    for other variables fill na with 0
+3. OneHot encoding for categorical variables
+4. Scale all other variables
+5. Stratified random split training and testing set where outcome is delist_tab
+5. For Training set only, oversampling delist_tab=1
+6. Train XGBoost where (n_estimators=50, max_depth=3, learning_rate=0.1, subsample=0.8, random_state=42, use_label_encoder=False, eval_metric="logloss")
+7. Print testing error by delist_tab class
+8. print AUC-ROC curve
+9. calculate sharply value and print beasworm bar plot
+
+**********************************************************************************************************************
+
+Ver.2
+Date: 08/20/20203
+Main Task:
+    1. Create a 186+1000 ready-to-be-traiend subsample
+    2. Try 5-fold cross validation
+    3. plot ROC figure based on 5-fold CV
+    4. Try to predict probability and plot ROC
+
+GPT-4 subsample generation prompt:
+A brief introduction of my project: My altimate goal is to train a machine learning model based on the file I gave to you.
+In the table, delist_tab is the outcome.
+Now I need you help me create a samller table whcih is ready to be traiend by following steps
+ 
+1. Select all delist_tab=1 and then random sampling 1000 obs with delist_tab =0, set the random_state=816. 
+2. NA Processing:
+Categorical variables: atc1, mnflg, vbp_flag, VBP_Batch, VBP_time, NRDL, NRDL_LIMTT, ENTRY_TIME;
+    2.1 Create a numerical variable name list excluding all variables and outcome
+    2.2 For all categorical variables do LabaelEncoding
+    2.3 For other variables fill na with 0
+3. OneHot encoding for all categorical variables, set dtype = floating
+4. Scale all numerical variables by the name list you created before
+5. Show the head of dataset. Output the dataset and create link for me to download it
+
+GPT-4 5-fold CV training prompt:
+A brief introduction of my project: I want to train a XGBoost model based on the file I gave to you.
+In the file, delist_tab is the outcome.
+Now, I need you help me with the model by following steps:
+1. Use 5-fold cross validation to split training and testing sets
+2. For each traing set, do oversampling to the class of delist_tab=1
+3. Train XGBoost where (n_estimators=50, max_depth=3, learning_rate=0.1, subsample=0.8, random_state=42, use_label_encoder=False, eval_metric="logloss")
+4. Show the testing error in precision, recall, F1-score by different outcome class by 5-fold
+5. Plot the ROC curve for 5-fold and both predicted 0-1 outcome and preodicted probability
+6. Plot feature importance and sharply value
