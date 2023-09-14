@@ -1,0 +1,232 @@
+Ver.1
+Date: 08/28/2023
+Main Task: GPT-4 Code interpreter training-testing
+
+Preprocess: 
+1. Remove variables: pfc5, atc, atc2, pack_desc, prod_desc, molecule, lab_desc, corpname, 
+2. categorical variables: atc1, mnflg, vbp_flag, VBP_Batch,	VBP_time, NRDL, NRDL_LIMTT, ENTRY_TIME
+
+GPT-4 code interpreter training steps (prompt):
+1. Select all delist_tab=1 and then random sampling 1000 obs with delist_tab =0. 
+2. NA Processing:
+    categorical variables: atc1, mnflg, vbp_flag, VBP_Batch,	VBP_time, NRDL, NRDL_LIMTT, ENTRY_TIME
+    for categorical variable to LabaelEncoding
+    for other variables fill na with 0
+3. OneHot encoding for categorical variables
+4. Scale all other variables
+5. Stratified random split training and testing set where outcome is delist_tab
+5. For Training set only, oversampling delist_tab=1
+6. Train XGBoost where (n_estimators=50, max_depth=3, learning_rate=0.1, subsample=0.8, random_state=42, use_label_encoder=False, eval_metric="logloss")
+7. Print testing error by delist_tab class
+8. print AUC-ROC curve
+9. calculate sharply value and print beasworm bar plot
+
+**********************************************************************************************************************
+
+Ver.2
+Date: 08/29/20203
+Main Task:
+    1. Create a 186+1000 ready-to-be-traiend subsample
+    2. Try 5-fold cross validation
+    3. plot ROC figure based on 5-fold CV
+    4. Try to predict probability and plot ROC
+
+GPT-4 subsample generation prompt (file given: full dataset):
+A brief introduction of my project: My altimate goal is to train a machine learning model based on the file I gave to you.
+In the table, delist_tab is the outcome.
+Now I need you help me create a samller table whcih is ready to be traiend by following steps
+ 
+1. Select all delist_tab=1 and then random sampling 1000 obs with delist_tab =0, set the random_state=816. 
+2. NA Processing:
+Categorical variables: atc1, mnflg, vbp_flag, VBP_Batch, VBP_time, NRDL, NRDL_LIMTT, ENTRY_TIME;
+    2.1 Create a numerical variable name list excluding all variables and outcome
+    2.2 For all categorical variables do LabaelEncoding
+    2.3 For other variables fill na with 0
+3. OneHot encoding for all categorical variables, set dtype = floating
+4. Scale all numerical variables by the name list you created before
+5. Show the head of dataset. Output the dataset and create link for me to download it
+
+GPT-4 5-fold CV training prompt (file given: processed dataset):
+A brief introduction of my project: I want to train a XGBoost model based on the file I gave to you.
+In the file, delist_tab is the outcome.
+Now, I need you help me with the model by following steps:
+1. Use 5-fold cross validation to split training and testing sets
+2. For each traing set, do oversampling to the class of delist_tab=1
+3. Train XGBoost where (n_estimators=50, max_depth=3, learning_rate=0.1, subsample=0.8, random_state=42, use_label_encoder=False, eval_metric="logloss")
+4. Show the testing error in precision, recall, F1-score by different outcome class by 5-fold
+5. Plot the ROC curve for 5-fold and both predicted 0-1 outcome and preodicted probability
+6. Plot feature importance and sharply value
+
+**********************************************************************************************************************
+
+Ver.3
+Date: 08/30/2023
+Main task:
+1. Modify proprocess code
+2. Create 10 times loop for random_state in kfold of XGBoost model 
+3. Create grid search Code
+
+GPT-4 data_preprocesser modification prompt (file given: current code):
+I will give you some code later whcih is for data loading, resamling, preprocessing and output the processed data.
+Help me modify the code by defining different function by my requirements.
+1. For data loading, define a function "data_loader" to read the raw data 
+    1.1 This function should be able to get the path of raw data which is in the "raw_data" folder under the main project folder by file_name 
+    1.2 The input attributes shold be file_name only
+    1.3 The output of this function should be a dataframe named "raw_data" which do not have to be saved
+2. For the data resampling, define a function "data_resampler" to split data by the outcome classes
+    2.1 The input attributes should be raw_data, outcome_name, random_state, resample_number
+    2.2 In this function, I want all obs with outcome = 1; and random sample n=resample_number obs with outcome=0
+    2.3 The output should be a combined data "resampled_data" combining 2 datasets selected by outcome classes
+3. For data preprocessing, define a function "data_preprocesser" to preprocess resampled data
+    3.1 The input attributes should be categorical variables name list "categorical_vars", resampled_data
+    3.2 This function should be able to get numerical variables by excluding categorical_vars and outcome from resampled_data
+    3.3 For categorical variables, do LabaelEncoding
+    3.4 And then for categorical variables, do OneHot encoding
+    3.5 For numerical variables, fill NAs with 0
+    3.6 And then for numerical variables, do scaling
+    3.5 The output should be the processed_data
+4. For output data, define a function "data_outputer" to output dataframe
+    4.1 The input attributes should be dataframe to be output and the output file name
+    4.2 This function should be able to find the path of output folder "processed" under the project folder
+
+**********************************************************************************************************************
+
+Ver.4
+Date 09/06/2023
+Main task:
+1. Finish "preprocessing.py" and preprocessing part of "main.py"
+2. Enhance code for generalizability
+
+GPT-4 generalizability code modification prompt:
+I will give you some code of XGBoost modelling which will be in the delimiter. Help me modify the code by following steps:
+1. Create a JSON file for configuration paramters including: data (raw and post_engineering), models (XGB and random forest), scaling (minmax and standard), hyperparameters for tuning
+2. Define a function to do grid search and can decide which mode to use by read the JSON file
+3. Define a function to evaluate model performance and store all metrics in the output folder
+4. Define a function to plot 5 fold AUC ROC figure and shap value 
+
+Then, create a mian.py to use these function. In the main function you should realize following steps
+1. Create a for loop on random_state of to split training and testing sets with 0.8:0.2 ratio. Iterate 10 times on random_state
+2. for each loop, use 5 fold cross validation to split training set to training and validation set. Train model on training set with grid search and decide which paramters is the best on validation sets
+
+Issues to be resolved:
+1. gridsearchCV
+2. model.py functions
+3. output format
+
+**********************************************************************************************************************
+
+Ver.5
+Date 09/07/2023
+Main task:
+1. Re-organize workflow 
+2. gridsearchCV to tune the hyperparameters AND record socres of each fold
+3. 10 fold cross validation to test the generalizability
+
+GPR-4 prompt:
+I will give you some code of XGBoost modelling which will be in the delimiter. Help me modify the code by following steps:
+
+1. Create a JSON file saving all configuration paramters for hyperparameters contianing:
+    1.1 data: raw data AND engineered data which is under the "raw_data“ folder under the project
+    1.2 models: XGBoost and random forest
+    1.3 hyperparameters grid for XGBoost and random forest
+By reading this JSON file, the program should be able to decide which method to be used
+
+2. You should define several functions and a main.py to realize hyperparameter tuning. In the main.py the structure should be like this:
+    3.1 Based on JSON file model name, check whether there is a model name folder under "output" folder under the project
+        3.1.1 if yes create two folders under model name folder: "score" and "plot" 
+        3.1.2 if not create a model name folder first then do 3.1.1
+    3.1 Next, create a outter "for" loop iterating on random_state 10 times to splittraining and testing set 
+    3.2 For each training set:
+        3.2.1 Use gridsearchCV with 5 folds to decide the best estimator among the paramters grid and save it
+        3.2.2 For the best estimator, calculate scores (precision, reacall, f1score by each class of outcome) on each fold and calculate mean score 
+        AND save them in one csv file in "score" folder 
+        3.2.3 For the best estimator, plot a AUC-ROC cureve of 5 folds in one figure save the figure
+        3.2.4 Plot a shap value figure of the best estimator and save it  
+    3.3 For the testing set, test the scores with the best estimator chosen by gridsearchCV and save it in "score" folder
+When save files, name them properly
+
+3. Define a function or a series of functions to do gridsearchCV to tune the hyperparameters 
+    4.1 this function should be able to decide which model to use by reading the JSON file 
+    4.2 this function should be able to decide and save the best estimator 
+
+4. Define a function to calculate and save socres, feature importance, shap value for each fold in gridsearchCV
+    5.2 this function should be able to get and save the score (precision, reacall, f1score by each class of outcome) of each fold 
+    5.3 this function should be able to 
+
+5. Defien a function to evaluate the model performace on the testing set
+    5.1 this function should be able to get scores and save them
+
+**********************************************************************************************************************
+
+Ver.6
+Date 09/08/2023
+Main task:
+1. Refine prompt and code 
+
+GPR-4 prompt:
+Help me create a JSON file and python code following steps below:
+
+1. Create a JSON file saving all configuration paramters for hyperparameters contianing:
+    1.1 data: raw data "raw.csv".
+    1.2 categorical variable names:
+        1.2.1 for "raw.csv" the categorical variables are "".
+    1.3 Scaling methods: MinMaxScaler.
+    1.2 models: XGBoost.
+    1.3 hyperparameters grid for XGBoost.
+By reading this JSON file, the program should be able to decide which dataset, scaling, and model to be used.
+
+2. You should define several functions whcih will be saved in "utils" folder under the project folder and a main.py to realize the ulitmate goal: "hyperparameter tuning". 
+To be noticed, "delist_tab" is the outcome variable in thsi project.
+The workflow of this project is like:
+    2.1 Load data: Define a function to load data from "raw_data" folder based on dataset name from JSON file.
+        2.1.1 The input variables of this function should only be the file name read from JSON. This function should be determine the path by os module itself.
+
+    2.2 preprocessing: Defien a function to realize following steps
+        2.2.1 split numerical variables and categorical variables by reading categorical variables name from JSON file.
+        2.2.2 For numerical variables, repalce NAs with 0.
+        2.2.3 For numerical variables, determine which scaling method to be used and do scaling.
+        2.2.4 For categorical variables, do LabaelEncoding first and then do OneHot encoding.
+
+    2.3 save processed data: define a function to save processed data to "output" folder. This function should be able to determine the path by os module itself.
+
+    2.4 Based on JSON file model name, define a function to check whether there is a model name folder under "output" folder under the project.
+        2.4.1 if yes, create two folders under model name folder: "score" and "plot".
+        2.4.2 if not, create a model name folder first then do 3.1.1.
+
+    2.5 Next, create a outter "for" loop iterating on random_state 10 times to splittraining and testing set 
+
+    2.6 For each training set:
+        2.6.1 Use gridsearchCV with 5 folds to decide the best estimator among the paramters grid and save it. Remeber to use SMOTE oversampling for delist_tab=1.
+        2.6.2 For the best estimator, calculate scores (precision, reacall, f1score by each class of outcome) on each fold and calculate mean score 
+        AND save them in one csv file in "score" folder 
+        2.6.3 For the best estimator, plot a AUC-ROC cureve of 5 folds in one figure save the figure to "plot" folder 
+        2.6.4 Plot a shap value figure of the best estimator and save it to "plot" folder 
+    2.7 For the testing set, test the scores with the best estimator chosen by gridsearchCV and save it in "score" folder
+When save files, name them properly
+
+3. Define a function or a series of functions to do gridsearchCV to tune the hyperparameters 
+    3.1 this function should be able to decide which model to use by reading the JSON file 
+    3.2 this function should be able to decide and save the best estimator 
+
+4. Define a function to calculate and save socres, feature importance, shap value for each fold in gridsearchCV
+    4.2 this function should be able to get and save the score (precision, reacall, f1score by each class of outcome) of each fold 
+    4.3 this function should be able to 
+
+5. Defien a function to evaluate the model performace on the testing set
+    5.1 this function should be able to get scores and save them
+
+**********************************************************************************************************************
+Ver.7
+Date 09/13/2023
+Main task:
+1. Modify perform_grid_search_cv function: delete pipeline in this project
+
+GPT-4 prompt for modifying function of performing gridsearchCV:
+The code I give to you is a self-defined function to perform gridsearchCV. Now I would like to delete pipeline from my function. I will read model_name, hyperparameters_grid from a JSON file out of this function. 
+The final goal is to select the best estimator which is the hyperparameter combination by performing gridsearchCV. Try to modify my code following my instruction.
+
+GPT-4 prompt for record socres and plot training roc-curve:
+
+The code I give to you in delimiter is a self-defined function to perform gridsearchCV. Can you modify my code to finish following object:
+1. calculate f1 score, precision, recall, accuracy of the best_estimator on each testing fold and a mean of 5 folds
+2. plot roc-curve of 5 folds in one figure and save it

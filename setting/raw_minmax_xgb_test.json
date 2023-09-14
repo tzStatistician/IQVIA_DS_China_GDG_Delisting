@@ -1,0 +1,16 @@
+{
+    "data": {
+      "filename": "raw.csv",
+      "categorical_variables": ["atc1", "mnflg", "vbp_flag", "VBP_Batch", "VBP_time", "NRDL", "NRDL_LIMTT", "ENTRY_TIME"]
+    },
+    "preprocessing": {
+      "scaling_method": "MinMaxScaler"
+    },
+    "model": {
+      "name": "XGBoost",
+      "hyperparameters_grid": {
+        "Model__max_depth": [5, 7],
+        "Model__min_child_weight": [1, 3]
+      }
+    }
+  }
