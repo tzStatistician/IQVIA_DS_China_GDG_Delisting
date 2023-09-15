@@ -230,3 +230,41 @@ GPT-4 prompt for record socres and plot training roc-curve:
 The code I give to you in delimiter is a self-defined function to perform gridsearchCV. Can you modify my code to finish following object:
 1. calculate f1 score, precision, recall, accuracy of the best_estimator on each testing fold and a mean of 5 folds
 2. plot roc-curve of 5 folds in one figure and save it
+
+**********************************************************************************************************************
+Ver.8
+Date: 09/14/2023
+Main Task:
+1. Figure out how to finish configuration with pipeline
+2. Modify scorer metrics
+3. Modify refit strategy
+
+GPT-4 prompt for finishing configuration with pipeline:
+I am trying to configurate and get the best methods combination from following grid by pipeline function form sklearn:
+1. dataset: raw data OR processed data
+2. Oversampling methods: SMOTE OR ADASYN
+3. Model: XGBoost OR random forest
+Help me finish this task following steps and give me python code
+
+GPT-4 prompt to set up scorer metrics:
+I am try to do gridsearchCV in python. And I want to finish following tasks:
+1. Create a dataframe of testing f1, precision, recall, accuracy of different class of outcome and mean of both classes for each hyperparamter combination
+2. select the best estimator by highest f1_score of outcome = 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder, MinMaxScaler
+from sklearn.preprocessing import LabelEncoder, MinMaxScaler
 
 # define a function to get json file path by json file name
 def get_json_path(json_file_name):

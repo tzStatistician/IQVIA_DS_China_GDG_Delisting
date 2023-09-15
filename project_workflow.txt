@@ -13,3 +13,10 @@ Date 9/14/2023
 3. preprocess and save
 
 4. gridsearchCV with pipeline
+
+Time Estimation
+param: 5 * 5 * 5 * 5 * 5
+oversampler:2
+dataset:2
+generalizability: 10
+one fit time: 10

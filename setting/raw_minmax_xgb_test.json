@@ -8,9 +8,10 @@
     },
     "model": {
       "name": "XGBoost",
+      "oversampling": "SMOTE",
       "hyperparameters_grid": {
-        "Model__max_depth": [5, 7],
-        "Model__min_child_weight": [1, 3]
+        "Model__max_depth": [1,3],
+        "Model__n_estimators": [50,60]
       }
     }
   }
