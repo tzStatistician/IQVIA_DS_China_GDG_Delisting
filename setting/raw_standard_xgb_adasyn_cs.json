@@ -1,0 +1,23 @@
+{
+    "data": {
+      "filename": "raw.csv",
+      "categorical_variables": ["atc1", "mnflg", "vbp_flag", "VBP_Batch", "VBP_time", "NRDL", "NRDL_LIMTT", "ENTRY_TIME"]
+    },
+    "preprocessing": {
+      "scaling_method": "StandardScaler"
+    },
+    "model": {
+      "name": "XGBoost",
+      "oversampling": "ADASYN",
+      "hyperparameters_grid": {
+        "Model__learning_rate": [0.1],
+        "Model__max_depth": [3,5],
+        "Model__n_estimators": [100, 150],
+        "Model__min_child_weight": [1, 5, 10],
+        "Model__gamma": [1.5],
+        "Model__subsample": [0.8],
+        "Model__max_delta_step": [0, 1, 2],
+        "Model__scale_pos_weight": [134, 267, 534]
+      }
+    }
+  }

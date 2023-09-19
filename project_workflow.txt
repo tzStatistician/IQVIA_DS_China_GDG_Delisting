@@ -20,3 +20,15 @@ oversampler:2
 dataset:2
 generalizability: 10
 one fit time: 10
+
+#####################################################################
+
+Ver 2
+Date: 09/15/2023
+Issues:
+1. Scaling should only be used on training set (pipeline)
+2. imbalance dataset: 
+    Oversampling Methods: Borderline-SMOTE, ADASYN, 
+    Cost-sensitive Methods: scale_pos_weight, max_delta_step, min_child_weight
+3. Distance-based methods: KNN
+4. Feature engineering

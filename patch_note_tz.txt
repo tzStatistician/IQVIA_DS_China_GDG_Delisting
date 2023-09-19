@@ -251,13 +251,48 @@ I am try to do gridsearchCV in python. And I want to finish following tasks:
 1. Create a dataframe of testing f1, precision, recall, accuracy of different class of outcome and mean of both classes for each hyperparamter combination
 2. select the best estimator by highest f1_score of outcome = 1
 
+**********************************************************************************************************************
+Ver.9 
+Date: 09/18/2023
+Main Task:
+1. Search for method to save output once one hyperparameter combination is done
+2. Modify pipeline order to do scaling after train_test_split
+3. KNN Baseline model
 
+Reworked Main Task:
+1. Search for range of scale_pos_weight, max_delta_step, min_child_weight fro imbalanced data
+2. Try Borderline-SMOTE and ADASYN on optimal hyperparameter combination of XGBoost
+3. Try KNN baseline model
 
+GPT-4 prompt for searching for range of scale_pos_weight, max_delta_step, min_child_weight fro imbalanced data:
+I am trying to do gridsearchCV with piplein (a function from sklearn) in python to find the best hyperparameter combination of XGBoost model.
+I am working with a highly imbalanced dataset with outcome class ratio around 186:50000. 
+I want to reach the best hyperparameter combination by configure the cost-sensitive hyperparameter including: scale_pos_weight, max_delta_step, min_child_weight.
+Can you show me the range of these hyperparameter.
 
+GPT-4 prompt for training model with different JSON seeting file and aurgument parser:
+I am trying to do gridsearchCV with pipeline (a function from sklearn) in python to find the best hyperparameter combination of XGBoost model.
+In the training and testing stage, I want to run different configuration setting (setting1.json, setting2.json, setting3.json) in JSON file with command line and main.py.
+The path to json file folder is saved in config_path now. Provide me python and command lien example to use parser to load JSON setting files.
 
+GPT-4 prompt for time-series data feature engineering:
+In my project, I have a dataset with both numerical and categorical variables. The goal of my project is to classify the binary outcome with XGBoost.
+All numerical variables in the dataset are time-series data representing medication sales-in data. 
+By correlation matrix I found that there are some variables are highly correlated. I want to do some feature engineering to make the model perform better.
+What do you recommend me to do?
 
+**********************************************************************************************************************
+Ver.10
+Date: 09/19/2023
+Main Task:
+1. Determine the threshold of recall and define function of getting best estimator
+    1.1 Check current score output
+    1.2 Plot recall vs f1/ recall vs f1
+2. Finish engineered dataset preprocessing program modification
+3. Finish KNN baseline model
 
-
+GPT-4 prompt for inserting scaling inside pipeline:
+I want to finish gridsearchCV with pipeline. And I want to do scaling only to numerical variables. I have the name list of categorical variables.
 
 
 
