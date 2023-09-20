@@ -1,7 +1,6 @@
 import os
 import pandas as pd
-from sklearn.discriminant_analysis import StandardScaler
-from sklearn.preprocessing import LabelEncoder, MinMaxScaler
+from sklearn.preprocessing import LabelEncoder
 
 # Read raw data based on file name
 def data_loader(file_name):

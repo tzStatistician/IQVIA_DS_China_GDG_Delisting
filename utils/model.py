@@ -4,12 +4,14 @@ import os
 from sklearn.discriminant_analysis import StandardScaler
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.compose import ColumnTransformer
+from sklearn.base import BaseEstimator, TransformerMixin
 
 # model selection module
-from imblearn.over_sampling import SMOTE, ADASYN
+from imblearn.over_sampling import SMOTE, ADASYN, BorderlineSMOTE
 from imblearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
 import xgboost as xgb
+import lightgbm as lgb
 from sklearn.model_selection import GridSearchCV
 
 from sklearn.metrics import f1_score, make_scorer, precision_score, recall_score, accuracy_score
@@ -24,6 +26,12 @@ def create_model_output_folders(config):
         os.makedirs(os.path.join(model_output_path, 'score'))
         os.makedirs(os.path.join(model_output_path, 'plot'))
 
+# Define a NULL oversampler
+class NullOversampler(BaseEstimator, TransformerMixin):
+    def fit(self, X, y=None):
+        return self
+    def transform(self, X, y=None):
+        return X
 
 # Function to perform grid search CV for hyperparameter tuning
 def perform_grid_search_cv(X, y, X_cat_encoded_name, config):
@@ -36,16 +44,22 @@ def perform_grid_search_cv(X, y, X_cat_encoded_name, config):
     # Define model
     if model_name == 'XGBoost':
         model = xgb.XGBClassifier(random_state=816, verbosity=0)
-    else: 
+    elif model_name == 'RandomForest': 
         model = RandomForestClassifier(random_state=816, verbose=0)
+    elif model_name == 'LGB':
+        model = lgb.LGBMClassifier(random_state=816, verbosity=0)
 
     oversampling_method = config['model']['oversampling']
 
     # Define oversampler
     if oversampling_method == 'SMOTE':
         oversampler = SMOTE(random_state=816)
-    else:
+    elif oversampling_method == 'ADASYN':
         oversampler = ADASYN(random_state=816)
+    elif oversampling_method == 'BorderlineSMOTE':
+        oversampler = BorderlineSMOTE(random_state=816)
+    else :
+        oversampler = NullOversampler()
 
     # Define scaler
     if scaling_method == 'MinMaxScaler':
@@ -104,6 +118,6 @@ def save_cv_results(cv_results_df, config):
     cv_results_df.to_csv(os.path.join(score_output_path, filename), index=False)
 
     # Create a smaller output file
-    cv_results_df_clean = cv_results_df[["mean_fit_time", "params", "mean_test_f1_1", "std_test_f1_1", "rank_test_f1_1", "mean_test_precision_1", "std_test_precision_1", "rank_test_precision_1", "mean_test_recall_1", "std_test_recall_1", "rank_test_recall_1", "mean_test_f1_mean", "std_test_f1_mean", "rank_test_f1_mean"]]
+    cv_results_df_clean = cv_results_df[["mean_fit_time", "params", "mean_test_f1_1", "std_test_f1_1", "rank_test_f1_1", "mean_test_recall_1", "std_test_recall_1", "rank_test_recall_1", "mean_test_f1_mean", "std_test_f1_mean", "rank_test_f1_mean"]]
     cv_results_df_clean_name = f'{df_name}_{scaling_method}_{oversampling_method}_{model_name}_clean.csv'
     cv_results_df_clean.to_csv(os.path.join(score_output_path, cv_results_df_clean_name), index=False)

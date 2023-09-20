@@ -295,6 +295,31 @@ GPT-4 prompt for inserting scaling inside pipeline:
 I want to finish gridsearchCV with pipeline. And I want to do scaling only to numerical variables. I have the name list of categorical variables.
 
 
+**********************************************************************************************************************
+Ver.10
+Date: 09/20/2023
+Main Task
+1. Add None oversampler to pipeline
+
+GPT-4 prompt for None oversampler:
+I want to read my oversampling setting from a JSON file. And I want to add a None oversampler to my pipeline.
+My current code is in the delimiter:
+```
+    if oversampling_method == 'SMOTE':
+        oversampler = SMOTE(random_state=816)
+    elif oversampling_method == 'ADASYN':
+        oversampler = ADASYN(random_state=816)
+    else :
+        oversampler = None
+
+     pipe = Pipeline([('Processpr', preprocessor),
+                     ('Oversampling', oversampler), 
+                     ('Model', model)])
+
+    grid_search = GridSearchCV(pipe, hyperparameters_grid, cv=5, scoring=scorer, refit= 'f1_1', verbose=2, n_jobs=-1)
+```
+But I am not sure about whether it is correct. Can you help me check it?
+
 
 
 
