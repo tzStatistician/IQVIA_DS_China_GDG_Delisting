@@ -320,8 +320,22 @@ My current code is in the delimiter:
 ```
 But I am not sure about whether it is correct. Can you help me check it?
 
+**********************************************************************************************************************
+Ver. 11
+Date: 09/21/2023
+Main Task:
+1. Create a nice markdown file
 
-
+GPT-4 prompt for creating a nice markdown file:
+I would like to creat a nice markdown file to show my project. Help me create it following my structure and make it cool.
+1. Title: IQVIA CHPA Delisted Products Detectopm
+2. Organization: IQVIA DS China
+3. Introduction: 
+This project aims to predict the delisted products in the future. The delisting products prediction could increase the CHPA report quality. Prediction is created by machine learning methods.
+XGBoost, LightGBM are analyzed in this project. Data used in this project is from IQVIA CHPA database. Training data include sales-in data from 2018M5 to 2023M5 and several other variables representing medication characteristics. The outcome is a binary variable indicating whether the medication is delisted in the future. 
+4. Usage
+4.1 Clone git from https://github.com/tzStatistician/IQVIA_DS_China_GDG_Delisting
+4.2 Install all required packages in requirements.txt
 
 
 
