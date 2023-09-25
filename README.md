@@ -19,3 +19,14 @@ git clone https://github.com/tzStatistician/IQVIA_DS_China_GDG_Delisting.git
 ```
 pip install -r requirements.txt
 ```
+
+3. **Change path in code**
+Line 16 in main.py
+```
+parser.add_argument('--config', type=str, required=True, help=r'path_to_your_setting_folder')
+```
+
+4. **Modify JSON settings**
+
+5. **Modify .bat file**
+Modify command lines in batch file should be modified to meet your task.

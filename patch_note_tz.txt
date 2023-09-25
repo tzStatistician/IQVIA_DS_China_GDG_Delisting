@@ -325,6 +325,8 @@ Ver. 11
 Date: 09/21/2023
 Main Task:
 1. Create a nice markdown file
+2. Create a strategy for determining best_estimator (recall_1>0.8 and best f1_1)
+3. Create a plotting function for the best estimator
 
 GPT-4 prompt for creating a nice markdown file:
 I would like to creat a nice markdown file to show my project. Help me create it following my structure and make it cool.
@@ -337,8 +339,27 @@ XGBoost, LightGBM are analyzed in this project. Data used in this project is fro
 4.1 Clone git from https://github.com/tzStatistician/IQVIA_DS_China_GDG_Delisting
 4.2 Install all required packages in requirements.txt
 
+GPT-4 prompt for creating a strategy for determining best_estimator:
+I am trying to do gridsearchCV with pipeline (a function from sklearn) in python to find the best hyperparameter combination of XGBoost model.
+I defiend a scorer function to calculate f1 score, precision, recall, accuracy of the best_estimator on each testing fold and a mean of 5 folds.
+Now I want to define a function to make gridsearchCV find the best_estimator by my strategy:
+1. (recall of outcome = 1) > 0.8
+2. Best f1 score of outcome = 1
+Help me to define this function.
 
 
+**********************************************************************************************************************
+Ver. 12
+Date: 09/22/2023
+Main Task:
+1. Set up customized best parameter selection strategy and save best estimator
+2. randomgridsearchCV
+
+GPT-4 prompt for 10 fold cross validation for the best estimator report:
+I have a best_estimator which is the best_estimator selected by gridsearchCV and pipeline. Now I loaded dataset set named "processed" and "delist_tab" is my outcome.
+I want to do 10 fold cross validation on the best_estimator. Help me to finish following tasks:
+1. Plot ROC curve for each fold in 10 fold cross validation and plot them in one figure
+2. Calculate mean f1 score, mean precision, mean recall, accuracy and for each outcome class of each fold in 10 fold cross validation and save them in one csv file
 
 
 

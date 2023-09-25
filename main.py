@@ -1,13 +1,15 @@
 import argparse
 import json
 import pandas as pd
-
-from utils.model import create_model_output_folders, perform_grid_search_cv, save_cv_results
-from utils.preprocessing import data_loader, preprocess_data, save_processed_data
-
 import warnings
 
-warnings.filterwarnings("ignore")
+from utils.model import create_model_output_folders, perform_grid_search_cv, save_best_estimator, save_cv_results
+from utils.preprocessing import data_loader, preprocess_data, save_processed_data
+
+
+from utils.report import best_estimator_loader, gene_test
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
 ######################################## Step 1 - Load Data ########################################
 # Set up the argument parser
 parser = argparse.ArgumentParser(description='Perform grid search CV for hyperparameter tuning.')
@@ -26,10 +28,8 @@ print("The shape of raw data is: ", raw_df.shape)
 ######################################## Step 2 - Preprocess the data ########################################
 # Get the categorical variable names and scaling method
 categorical_var_names = config['data']['categorical_variables']
-scaling_method = config['preprocessing']['scaling_method']
 
 print("Categorical variables are", categorical_var_names)
-print("Scaling method is", scaling_method)
 
 X, y, X_cat_encoded_name = preprocess_data(raw_df, 'delist_tab', categorical_var_names)
 print("Data successfully preprocessed.")
@@ -55,4 +55,17 @@ print("Best hyperparameters combinations are", best_estimator)
 # Save the CV results
 cv_results_df = pd.DataFrame.from_dict(cv_results)
 save_cv_results(cv_results_df, config)
+print("CV results successfully saved.")
 
+# Save the best_estimator
+save_best_estimator(best_estimator, config)
+print("Best estimator successfully saved.")
+
+####################################### Step 4 - Test best_estimator generalizability #######################################
+# Load the best_estimator
+best_estimator = best_estimator_loader(config)
+print("Best estimator successfully loaded.")
+
+# Create ROC curve figure and metrics dataframe
+gene_test(best_estimator, config)
+print("Generalizability test successfully completed.") 

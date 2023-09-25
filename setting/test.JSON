@@ -13,14 +13,14 @@
         "hyperparameters_section": "1",
         "hyperparameters_grid": {
             "Model__learning_rate": [0.07],
-            "Model__max_depth": [3, 5, 7],
-            "Model__n_estimators": [100, 150],
+            "Model__max_depth": [3],
+            "Model__n_estimators": [100],
             "Model__min_child_weight": [5],
-            "Model__gamma": [0.01, 0.07],
-            "Model__subsample": [0.8, 0.9],
+            "Model__gamma": [0.01],
+            "Model__subsample": [0.8],
             "Model__max_delta_step": [1, 3, 5],
-            "Model__scale_pos_weight": [0.8, 0.9, 1.3, 1.5],
-            "Model__colsample_bytree": [0.8, 0.9]
+            "Model__scale_pos_weight": [0.8],
+            "Model__colsample_bytree": [0.8]
         }
     }
 }
