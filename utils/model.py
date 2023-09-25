@@ -2,6 +2,7 @@
 import os
 import numpy as np
 import joblib
+import json
 
 from sklearn.discriminant_analysis import StandardScaler
 from sklearn.preprocessing import MinMaxScaler
@@ -56,6 +57,7 @@ def perform_grid_search_cv(X, y, X_cat_encoded_name, config):
     scaling_method = config['preprocessing']['scaling_method']
     oversampling_method = config['model']['oversampling']
     search_method = config['model']['search_method']
+    candidates = config['model']['candidates']
 
     # Define model
     if model_name == 'XGBoost':
@@ -136,16 +138,17 @@ def perform_grid_search_cv(X, y, X_cat_encoded_name, config):
     if search_method == "GridSearchCV":
         search = GridSearchCV(pipe, hyperparameters_grid, cv=5, scoring=scorer, refit=custom_refit, verbose=2, n_jobs=-1)
     if search_method == "RandomizedSearchCV":
-        search = RandomizedSearchCV(pipe, hyperparameters_grid, n_iter=1, cv=5, scoring=scorer, refit=custom_refit, verbose=2, n_jobs=-1)
+        search = RandomizedSearchCV(pipe, hyperparameters_grid, n_iter=candidates, cv=5, scoring=scorer, refit=custom_refit, verbose=2, n_jobs=-1)
     else:
         raise ValueError("Please specify a valid search method.")
     
     search.fit(X, y)
 
     best_estimator = search.best_estimator_
+    best_params = search.best_params_
     cv_results = search.cv_results_
 
-    return best_estimator, cv_results
+    return best_estimator, best_params, cv_results
 
 ############################ Define function to save cv_results ############################
 def save_cv_results(cv_results_df, config):
@@ -172,7 +175,7 @@ def save_cv_results(cv_results_df, config):
     cv_results_df_clean.to_csv(os.path.join(score_output_path, cv_results_df_clean_name), index=False)
 
 ############################ Define fuction to save best estimator ############################
-def save_best_estimator(best_estimator, config):
+def save_best_estimator(best_estimator, best_params, config):
     # find correct directory
     df_name = config['data']['filename'][0:3]
     scaling_method = config['preprocessing']['scaling_method']
@@ -182,8 +185,13 @@ def save_best_estimator(best_estimator, config):
     hyperparameters_section = config['model']['hyperparameters_section']
     # Define filename
     filename = f'{df_name}_{scaling_method}_{oversampling_method}_{search_method}_{model_name}_{hyperparameters_section}.pkl'
+    param_name = f'{df_name}_{scaling_method}_{oversampling_method}_{search_method}_{model_name}_{hyperparameters_section}_params.json'
 
     model_output_be_path = os.path.join('output', model_name, 'best_estimator')
 
     # save best_estimator
     joblib.dump(best_estimator, os.path.join(model_output_be_path, filename))
+
+    # Save best_params
+    with open(os.path.join(model_output_be_path, param_name), 'w') as f:
+        f.write(json.dumps(best_params))

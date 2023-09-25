@@ -49,8 +49,9 @@ model_name = config['model']['name']
 print("Model name is", model_name)
 
 # Perform grid search CV
-best_estimator, cv_results = perform_grid_search_cv(X, y, X_cat_encoded_name, config)
-print("Best hyperparameters combinations are", best_estimator)
+best_estimator, best_params, cv_results = perform_grid_search_cv(X, y, X_cat_encoded_name, config)
+print("Best estimator are", best_estimator)
+print("Best hyperparameters are", best_params)
 
 # Save the CV results
 cv_results_df = pd.DataFrame.from_dict(cv_results)
@@ -58,7 +59,7 @@ save_cv_results(cv_results_df, config)
 print("CV results successfully saved.")
 
 # Save the best_estimator
-save_best_estimator(best_estimator, config)
+save_best_estimator(best_estimator, best_params, config)
 print("Best estimator successfully saved.")
 
 ####################################### Step 4 - Test best_estimator generalizability #######################################

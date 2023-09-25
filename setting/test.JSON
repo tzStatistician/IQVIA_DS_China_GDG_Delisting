@@ -10,6 +10,7 @@
         "name": "XGBoost",
         "oversampling": "ADASYN",
         "search_method": "RandomizedSearchCV",
+        "candidates": 5,
         "hyperparameters_section": "1",
         "hyperparameters_grid": {
             "Model__learning_rate": [0.07],
