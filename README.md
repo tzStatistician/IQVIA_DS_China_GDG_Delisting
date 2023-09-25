@@ -21,6 +21,7 @@ pip install -r requirements.txt
 ```
 
 3. **Change path in code**
+
 Line 16 in main.py
 ```
 parser.add_argument('--config', type=str, required=True, help=r'path_to_your_setting_folder')
