@@ -4,9 +4,9 @@
 
 ## Introduction
 
-This project aims to predict the delisted products in the future. The delisting products prediction could increase the CHPA report quality. Predictions are created using machine learning methods, specifically, XGBoost and LightGBM. 
+This project aims to predict the delisted products in the future China Medication Market. The delisting products prediction could increase the CHPA report quality. Predictions are created using machine learning methods, specifically, XGBoost and LightGBM. 
 
-Data used in this project is from the IQVIA CHPA database. The training data includes sales-in data from May 2018 to May 2023, and several other variables representing medication characteristics. The outcome is a binary variable indicating whether the medication is delisted in the future.
+Data used in this project is from the IQVIA CHPA database. The training data includes sales-in data of various medication from May 2018 to May 2023, and several other variables representing medication and pharmaceutical company characteristics. The outcome in this project is a binary variable indicating whether the medication is delisted in the future.
 
 ## Usage
 
