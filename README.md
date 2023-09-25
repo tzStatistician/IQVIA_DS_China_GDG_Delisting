@@ -15,7 +15,17 @@ Data used in this project is from the IQVIA CHPA database. The training data inc
 git clone https://github.com/tzStatistician/IQVIA_DS_China_GDG_Delisting.git
 ```
 
+2. **Set up virtual environment**
+
+```
+pip install virtualenv 
+python -m venv venv_name
+venv_name\Scripts\activate
+deactivate
+```
+
 2. **Install all required packages**
+
 ```
 pip install -r requirements.txt
 ```
@@ -23,11 +33,23 @@ pip install -r requirements.txt
 3. **Change path in code**
 
 Line 16 in main.py
+
 ```
 parser.add_argument('--config', type=str, required=True, help=r'path_to_your_setting_folder')
 ```
 
 4. **Modify JSON settings**
 
+Add/Modify/Delete .josn files to implement experiments by configurations you set.
+
 5. **Modify .bat file**
-Modify command lines in batch file should be modified to meet your task.
+
+Modify command lines in batch file "multi_settings_training.bat" to meet your task.
+
+6. **Execute**
+
+```
+cd path_to_your_project_folder
+venv_name\Scripts\activate
+multi_settings_training.bat
+```
