@@ -136,9 +136,9 @@ def perform_grid_search_cv(X, y, X_cat_encoded_name, config):
 
     # Use GridSearchCV
     if search_method == "GridSearchCV":
-        search = GridSearchCV(pipe, hyperparameters_grid, cv=5, scoring=scorer, refit=custom_refit, verbose=2, n_jobs=-1)
-    if search_method == "RandomizedSearchCV":
-        search = RandomizedSearchCV(pipe, hyperparameters_grid, n_iter=candidates, cv=5, scoring=scorer, refit=custom_refit, verbose=2, n_jobs=-1)
+        search = GridSearchCV(pipe, hyperparameters_grid, cv=5, scoring=scorer, refit=custom_refit, verbose=3, n_jobs=-1)
+    elif search_method == "RandomizedSearchCV":
+        search = RandomizedSearchCV(pipe, hyperparameters_grid, n_iter=candidates, cv=5, scoring=scorer, refit=custom_refit, verbose=3, n_jobs=-1)
     else:
         raise ValueError("Please specify a valid search method.")
     
