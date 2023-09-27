@@ -51,5 +51,5 @@ Modify command lines in batch file "multi_settings_training.bat" to meet your ta
 ```
 cd path_to_your_project_folder
 venv_name\Scripts\activate
-multi_settings_training.bat
+.\multi_settings_training.bat
 ```
